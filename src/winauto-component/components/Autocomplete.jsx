@@ -116,7 +116,7 @@ export const Autocomplete = ({
     if (editingTagIndex === -1 && inputRef.current) {
       // If the current active element is within the Gutenberg editor content area,
       // do not focus the sidebar input.
-      if (document.activeElement.closest(".block-editor-block-list__layout")) {
+      if (document.activeElement.closest(".editor-visual-editor")) {
         return;
       }
       inputRef.current.focus();
