@@ -113,12 +113,21 @@ export const Autocomplete = ({
   }, [selectedTags]);
 
   useEffect(() => {
-    if (editingTagIndex === -1) {
+    if (editingTagIndex === -1 && inputRef.current) {
+      // If the current active element is within the Gutenberg editor content area,
+      // do not focus the sidebar input.
+      if (document.activeElement.closest(".block-editor-block-list__layout")) {
+        return;
+      }
+      inputRef.current.focus();
+      inputRef.current.textContent = "";
+    }
+    /* if (editingTagIndex === -1) {
       if (inputRef.current) {
         inputRef.current.focus();
         inputRef.current.textContent = "";
       }
-    }
+    } */
   }, [editingTagIndex]);
 
   const handleBreakpoint = handleBreakpointUpdate(
@@ -197,19 +206,20 @@ export const Autocomplete = ({
     showSuggestions,
     setSelectedTags,
     setPasteEvent,
-    setPasteOverridesEvent
+    setPasteOverridesEvent,
   });
 
   return (
     <div className="relative w-100">
-      <div className="winauto-textarea"
+      <div
+        className="winauto-textarea"
         onClick={(e) => {
           // Only focus if clicking directly on the textarea, not on tags
-          if (e.target.classList.contains('winauto-textarea')) {
+          if (e.target.classList.contains("winauto-textarea")) {
             if (inputRef.current) inputRef.current.focus();
           }
         }}
-        >
+      >
         {isScreenChecked &&
           selectedTags
             .map((tag) => tag.replace(autocompleteKey, ""))
